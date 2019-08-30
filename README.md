@@ -12,9 +12,13 @@ This tool relies on Docker's [implementation of Canonical JSON](https://github.c
 
 ## Running
 
-The `canonjson` command takes only one argument: the path to a JSON file.
+The first argument is the input JSON file, and the second is an optional output file.
 
 ```console
 $ canonjson example.json
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"},"image_token":{"env":"AZ_IMAGE_TOKEN"},"kubeconfig":{"path":"/home/.kube/config"}},"description":"An example 'thick' helloworld Cloud-Native Application Bundle","images":[{"description":"helloworld microservice","digest":"sha256:bbbbbbbbbbbb...","image":"technosophos/helloworld:0.1.2","mediaType":"application/vnd.docker.distribution.manifest.v2+json","platform":{"architecture":"amd64","os":"linux"},"size":1337}],"invocationImages":[{"digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/helloworld:1.2.3","imageType":"docker","mediaType":"application/vnd.docker.distribution.manifest.v2+json","platform":{"architecture":"amd64","os":"linux"},"size":1337}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"maxValue":10240,"metadata":{"description":"The port that the backend will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"1.0.0"}
+
+$ canonjson example.json canonical.json
+$ cat canonical.json
 {"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"},"image_token":{"env":"AZ_IMAGE_TOKEN"},"kubeconfig":{"path":"/home/.kube/config"}},"description":"An example 'thick' helloworld Cloud-Native Application Bundle","images":[{"description":"helloworld microservice","digest":"sha256:bbbbbbbbbbbb...","image":"technosophos/helloworld:0.1.2","mediaType":"application/vnd.docker.distribution.manifest.v2+json","platform":{"architecture":"amd64","os":"linux"},"size":1337}],"invocationImages":[{"digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/helloworld:1.2.3","imageType":"docker","mediaType":"application/vnd.docker.distribution.manifest.v2+json","platform":{"architecture":"amd64","os":"linux"},"size":1337}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"maxValue":10240,"metadata":{"description":"The port that the backend will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"1.0.0"}
 ```

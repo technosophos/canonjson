@@ -9,18 +9,19 @@ import (
 )
 
 func main() {
+	const argErr = "The first argument is the input JSON file, and the second is an optional output file."
 	if len(os.Args) < 2 {
-		fail("the path to a JSON file is required")
+		fail(argErr)
 	}
 
-	file := os.Args[1]
-	if fi, err := os.Stat(file); err != nil {
-		fail("no such file: %s", file)
+	inputFile := os.Args[1]
+	if fi, err := os.Stat(inputFile); err != nil {
+		fail("no such file: %s", inputFile)
 	} else if fi.IsDir() {
-		fail("%s is a directory. JSON file required", file)
+		fail("%s is a directory. JSON file required", inputFile)
 	}
 
-	data, err := ioutil.ReadFile(file)
+	data, err := ioutil.ReadFile(inputFile)
 	if err != nil {
 		fail(err.Error())
 	}
@@ -34,8 +35,24 @@ func main() {
 	if err != nil {
 		fail(err.Error())
 	}
-	fmt.Println(string(out))
 
+	if len(os.Args) == 2 {
+		fmt.Println(string(out))
+	} else if len(os.Args) == 3 {
+		outputFile := os.Args[2]
+		f, err := os.Create(outputFile)
+		if err != nil {
+			fail("cannot create output file %v: %v", outputFile, err)
+		}
+		defer f.Close()
+
+		_, err = f.Write(out)
+		if err != nil {
+			fail(err.Error())
+		}
+	} else {
+		fail(argErr)
+	}
 }
 
 func fail(msg string, v ...interface{}) {
